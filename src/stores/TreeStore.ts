@@ -128,6 +128,5 @@ export class TreeStore {
         idsToRemove.forEach(id => {
             this.itemsMap.delete(id);
         });
-
     }
 }
