@@ -1,5 +1,8 @@
+export type parentId = number | string | null
+export type id = number | string
+
 export interface TreeItem {
-    id: number | string,
-    parent: number | string | null,
+    id: id,
+    parent: parentId,
     label: string,
 }
