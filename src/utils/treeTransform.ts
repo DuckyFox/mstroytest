@@ -7,22 +7,19 @@ export interface AgGridTreeItem extends TreeItem {
 }
 
 export function transformTreeToAgGrid(store: TreeStore): AgGridTreeItem[] {
-    const allItems = store.getAll();
     const result: AgGridTreeItem[] = [];
 
-    for (const item of allItems) {
+    for (const item of store.getAll()) {
         const parents = store.getAllParents(item.id);
-
-        const path = parents
-            .reverse()
-            .map(parent => String(parent.id));
+        const path = parents.reverse().map((p) => String(p.id));
 
         const hasChildren = store.getChildren(item.id).length > 0;
-        const category: 'Группа' | 'Элемент' = hasChildren ? 'Группа' : 'Элемент';
+
         result.push({
-            ...item,
-            path: path,
-            category: category
+            id: item.id,
+            label: item.label,
+            path,
+            category: hasChildren ? 'Группа' : 'Элемент',
         });
     }
 

@@ -1,4 +1,4 @@
-import type {TreeItem} from "./types.ts";
+import type { TreeItem } from './types.ts';
 
 export const mockTree: TreeItem[] = [
     { id: 1, parent: null, label: 'Айтем 1' },
@@ -8,5 +8,5 @@ export const mockTree: TreeItem[] = [
     { id: 5, parent: '91064cee', label: 'Айтем 5' },
     { id: 6, parent: '91064cee', label: 'Айтем 6' },
     { id: 7, parent: 4, label: 'Айтем 7' },
-    { id: 8, parent: 4, label: 'Айтем 8' }
-]
+    { id: 8, parent: 4, label: 'Айтем 8' },
+];

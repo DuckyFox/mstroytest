@@ -3,8 +3,10 @@
         <ag-grid-vue
             :rowData="rowData"
             :columnDefs="colDefs"
+            :getRowId="getRowId"
             :treeData="true"
             :getDataPath="getDataPath"
+            :autoGroupColumnDef="autoGroupColumnDef"
             :theme="theme"
         />
     </div>
@@ -12,10 +14,9 @@
 
 <script setup lang="ts">
 import {ref, onMounted} from "vue";
-import { computed } from 'vue';
 import { AgGridVue } from 'ag-grid-vue3';
 import { themeAlpine } from 'ag-grid-community';
-import type { ValueGetterParams, ColDef } from 'ag-grid-community';
+import type { ValueGetterParams, ColDef} from 'ag-grid-community';
 import { TreeStore } from '../stores/TreeStore';
 import { transformTreeToAgGrid } from '../utils/treeTransform';
 import type { AgGridTreeItem } from '../utils/treeTransform';
@@ -28,7 +29,7 @@ LicenseManager.setLicenseKey("[TRIAL]_this_{AG_Charts_and_AG_Grid}_Enterprise_ke
 const props = defineProps<{
     store: InstanceType<typeof TreeStore>;
 }>();
-console.log(JSON.stringify(transformTreeToAgGrid(props.store), null, 2));
+
 const rowData = ref<AgGridTreeItem[]>([]);
 
 onMounted(() => {
@@ -39,10 +40,24 @@ onMounted(() => {
 });
 
 const getDataPath = (data: AgGridTreeItem) => {
+    console.log(data.path)
     return data.path;
 };
+
+const getRowId = (p: { data: AgGridTreeItem }) => {
+    console.log(p.data.path.join('/'))
+    return p.data.path.join('/');
+};
+
 const theme = themeAlpine;
-const colDefs = computed<ColDef<AgGridTreeItem>[]>(()=>[
+
+const autoGroupColumnDef: ColDef = {
+    cellRendererParams: {
+        suppressCount: true
+    }
+};
+
+const colDefs: ColDef<AgGridTreeItem>[] = [
     {
         headerName: '№ п/п',
         width: 100,
@@ -63,7 +78,7 @@ const colDefs = computed<ColDef<AgGridTreeItem>[]>(()=>[
         flex: 1,
         cellRenderer: 'agGroupCellRenderer',
     }
-])
+]
 
 
 </script>

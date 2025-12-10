@@ -1,33 +1,32 @@
 import { TreeStore } from './TreeStore';
 import { mockTree } from './mockData';
 // import type { TreeItem } from './types';
-import {beforeEach, describe, it, expect} from "vitest";
+import { beforeEach, describe, it, expect } from 'vitest';
 
 describe('TreeStore', () => {
     let store: TreeStore;
 
     beforeEach(() => {
-        store = new TreeStore(mockTree)
-    })
+        store = new TreeStore(mockTree);
+    });
 
     describe('getAll', () => {
         it('должен вернуть все элементы', () => {
             const all = store.getAll();
-            expect(all).toHaveLength(8)
-        })
+            expect(all).toHaveLength(8);
+        });
         it('должен вернуть массив TreeItem', () => {
             const all = store.getAll();
-            all.forEach(item => {
+            all.forEach((item) => {
                 expect(item).toHaveProperty('id');
                 expect(item).toHaveProperty('parent');
                 expect(item).toHaveProperty('label');
             });
         });
 
-
         it('должен вернуть все элементы из mockTree', () => {
             const all = store.getAll();
-            const ids = all.map(item => item.id);
+            const ids = all.map((item) => item.id);
             expect(ids).toContain(1);
             expect(ids).toContain('91064cee');
             expect(ids).toContain(3);
@@ -47,7 +46,7 @@ describe('TreeStore', () => {
             const all = store.getAll();
             expect(Array.isArray(all)).toBe(true);
         });
-    })
+    });
 
     describe('getItem', () => {
         it('должен вернуть элемент по существующему id', () => {
@@ -81,17 +80,17 @@ describe('TreeStore', () => {
             expect(item).toEqual({
                 id: 4,
                 parent: '91064cee',
-                label: 'Айтем 4'
+                label: 'Айтем 4',
             });
         });
-    })
+    });
 
     describe('getChildren', () => {
         it('должен вернуть прямых детей для элемента с детьми', () => {
             const children = store.getChildren(1);
             expect(children).toHaveLength(2);
-            expect(children.map(c => c.id)).toContain('91064cee');
-            expect(children.map(c => c.id)).toContain(3);
+            expect(children.map((c) => c.id)).toContain('91064cee');
+            expect(children.map((c) => c.id)).toContain(3);
         });
 
         it('должен вернуть пустой массив для элемента без детей', () => {
@@ -102,9 +101,9 @@ describe('TreeStore', () => {
         it('должен вернуть всех прямых детей для строкового id', () => {
             const children = store.getChildren('91064cee');
             expect(children).toHaveLength(3);
-            expect(children.map(c => c.id)).toContain(4);
-            expect(children.map(c => c.id)).toContain(5);
-            expect(children.map(c => c.id)).toContain(6);
+            expect(children.map((c) => c.id)).toContain(4);
+            expect(children.map((c) => c.id)).toContain(5);
+            expect(children.map((c) => c.id)).toContain(6);
         });
 
         it('должен вернуть пустой массив для несуществующего id', () => {
@@ -122,39 +121,39 @@ describe('TreeStore', () => {
 
         it('должен вернуть детей с правильным parent', () => {
             const children = store.getChildren('91064cee');
-            children.forEach(child => {
+            children.forEach((child) => {
                 expect(child.parent).toBe('91064cee');
             });
         });
-    })
+    });
     describe('getAllChildren', () => {
         it('должен вернуть всех потомков рекурсивно', () => {
             const allChildren = store.getAllChildren(1);
             expect(allChildren).toHaveLength(7);
-            expect(allChildren.map(c => c.id)).toContain('91064cee');
-            expect(allChildren.map(c => c.id)).toContain(3);
-            expect(allChildren.map(c => c.id)).toContain(4);
-            expect(allChildren.map(c => c.id)).toContain(5);
-            expect(allChildren.map(c => c.id)).toContain(6);
-            expect(allChildren.map(c => c.id)).toContain(7);
-            expect(allChildren.map(c => c.id)).toContain(8);
+            expect(allChildren.map((c) => c.id)).toContain('91064cee');
+            expect(allChildren.map((c) => c.id)).toContain(3);
+            expect(allChildren.map((c) => c.id)).toContain(4);
+            expect(allChildren.map((c) => c.id)).toContain(5);
+            expect(allChildren.map((c) => c.id)).toContain(6);
+            expect(allChildren.map((c) => c.id)).toContain(7);
+            expect(allChildren.map((c) => c.id)).toContain(8);
         });
 
         it('должен вернуть всех потомков для элемента с вложенными детьми', () => {
             const allChildren = store.getAllChildren('91064cee');
             expect(allChildren).toHaveLength(5);
-            expect(allChildren.map(c => c.id)).toContain(4);
-            expect(allChildren.map(c => c.id)).toContain(5);
-            expect(allChildren.map(c => c.id)).toContain(6);
-            expect(allChildren.map(c => c.id)).toContain(7);
-            expect(allChildren.map(c => c.id)).toContain(8);
+            expect(allChildren.map((c) => c.id)).toContain(4);
+            expect(allChildren.map((c) => c.id)).toContain(5);
+            expect(allChildren.map((c) => c.id)).toContain(6);
+            expect(allChildren.map((c) => c.id)).toContain(7);
+            expect(allChildren.map((c) => c.id)).toContain(8);
         });
 
         it('должен вернуть всех потомков для элемента с глубокой вложенностью', () => {
             const allChildren = store.getAllChildren(4);
             expect(allChildren).toHaveLength(2);
-            expect(allChildren.map(c => c.id)).toContain(7);
-            expect(allChildren.map(c => c.id)).toContain(8);
+            expect(allChildren.map((c) => c.id)).toContain(7);
+            expect(allChildren.map((c) => c.id)).toContain(8);
         });
 
         it('должен вернуть пустой массив для элемента без детей', () => {
@@ -174,17 +173,17 @@ describe('TreeStore', () => {
 
         it('не должен включать сам элемент в результат', () => {
             const allChildren = store.getAllChildren(1);
-            expect(allChildren.map(c => c.id)).not.toContain(1);
+            expect(allChildren.map((c) => c.id)).not.toContain(1);
         });
 
         it('должен вернуть всех потомков независимо от уровня вложенности', () => {
             const allChildren = store.getAllChildren(1);
-            const ids = allChildren.map(c => c.id);
+            const ids = allChildren.map((c) => c.id);
             expect(ids).toContain('91064cee');
             expect(ids).toContain(4);
             expect(ids).toContain(7);
         });
-    })
+    });
 
     describe('getAllParents', () => {
         it('должен вернуть только сам элемент для корневого элемента', () => {
@@ -224,7 +223,7 @@ describe('TreeStore', () => {
 
         it('должен вернуть правильный порядок от элемента к корню', () => {
             const parents = store.getAllParents(7);
-            const ids = parents.map(p => p.id);
+            const ids = parents.map((p) => p.id);
             expect(ids).toEqual([7, 4, '91064cee', 1]);
         });
 
@@ -233,7 +232,7 @@ describe('TreeStore', () => {
                 store.getAllParents(999);
             }).toThrow('Данной записи не существует');
         });
-    })
+    });
     describe('addItem', () => {
         it('должен добавить новый элемент в store', () => {
             const newItem = { id: 9, parent: null, label: 'Айтем 9' };
@@ -246,14 +245,14 @@ describe('TreeStore', () => {
             store.addItem(newItem);
             expect(store.getItem(9)).toEqual(newItem);
             const children = store.getChildren(1);
-            expect(children.map(c => c.id)).toContain(9);
+            expect(children.map((c) => c.id)).toContain(9);
         });
 
         it('должен добавить элемент в childrenMap родителя', () => {
             const newItem = { id: 9, parent: '91064cee', label: 'Айтем 9' };
             store.addItem(newItem);
             const children = store.getChildren('91064cee');
-            expect(children.map(c => c.id)).toContain(9);
+            expect(children.map((c) => c.id)).toContain(9);
         });
 
         it('должен добавить элемент без родителя', () => {
@@ -268,7 +267,7 @@ describe('TreeStore', () => {
             store.addItem(updatedItem);
             expect(store.getItem(1).label).toBe('Обновленный Айтем 1');
         });
-    })
+    });
 
     describe('updateItem', () => {
         it('должен обновить существующий элемент', () => {
@@ -288,9 +287,9 @@ describe('TreeStore', () => {
             store.updateItem(updatedItem);
             expect(store.getItem(3).parent).toBe('91064cee');
             const oldParentChildren = store.getChildren(1);
-            expect(oldParentChildren.map(c => c.id)).not.toContain(3);
+            expect(oldParentChildren.map((c) => c.id)).not.toContain(3);
             const newParentChildren = store.getChildren('91064cee');
-            expect(newParentChildren.map(c => c.id)).toContain(3);
+            expect(newParentChildren.map((c) => c.id)).toContain(3);
         });
 
         it('должен переместить элемент из одного родителя в другого', () => {
@@ -298,9 +297,9 @@ describe('TreeStore', () => {
             store.updateItem(updatedItem);
             expect(store.getItem(4).parent).toBe(1);
             const oldParentChildren = store.getChildren('91064cee');
-            expect(oldParentChildren.map(c => c.id)).not.toContain(4);
+            expect(oldParentChildren.map((c) => c.id)).not.toContain(4);
             const newParentChildren = store.getChildren(1);
-            expect(newParentChildren.map(c => c.id)).toContain(4);
+            expect(newParentChildren.map((c) => c.id)).toContain(4);
         });
 
         it('должен переместить элемент от родителя к корню', () => {
@@ -308,7 +307,7 @@ describe('TreeStore', () => {
             store.updateItem(updatedItem);
             expect(store.getItem(4).parent).toBe(null);
             const oldParentChildren = store.getChildren('91064cee');
-            expect(oldParentChildren.map(c => c.id)).not.toContain(4);
+            expect(oldParentChildren.map((c) => c.id)).not.toContain(4);
         });
 
         it('должен переместить элемент от корня к родителю', () => {
@@ -316,7 +315,7 @@ describe('TreeStore', () => {
             store.updateItem(updatedItem);
             expect(store.getItem(1).parent).toBe(4);
             const newParentChildren = store.getChildren(4);
-            expect(newParentChildren.map(c => c.id)).toContain(1);
+            expect(newParentChildren.map((c) => c.id)).toContain(1);
         });
 
         it('не должен изменять childrenMap, если parent не изменился', () => {
@@ -324,9 +323,9 @@ describe('TreeStore', () => {
             const updatedItem = { id: '91064cee', parent: 1, label: 'Обновленный Айтем 2' };
             store.updateItem(updatedItem);
             const childrenAfter = store.getChildren(1);
-            expect(childrenAfter.map(c => c.id)).toEqual(childrenBefore.map(c => c.id));
+            expect(childrenAfter.map((c) => c.id)).toEqual(childrenBefore.map((c) => c.id));
         });
-    })
+    });
 
     describe('removeItem', () => {
         it('должен удалить элемент без детей', () => {
@@ -354,13 +353,13 @@ describe('TreeStore', () => {
         it('должен удалить элемент из childrenMap родителя', () => {
             store.removeItem(3);
             const children = store.getChildren(1);
-            expect(children.map(c => c.id)).not.toContain(3);
+            expect(children.map((c) => c.id)).not.toContain(3);
         });
 
         it('должен удалить элемент и его потомков из childrenMap родителя', () => {
             store.removeItem('91064cee');
             const children = store.getChildren(1);
-            expect(children.map(c => c.id)).not.toContain('91064cee');
+            expect(children.map((c) => c.id)).not.toContain('91064cee');
         });
 
         it('не должен выбрасывать ошибку при удалении несуществующего элемента', () => {
@@ -381,5 +380,5 @@ describe('TreeStore', () => {
             expect(store.getItem('91064cee')).toBeDefined();
             expect(store.getAll()).toHaveLength(7);
         });
-    })
-})
+    });
+});
